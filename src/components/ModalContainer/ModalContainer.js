@@ -57,7 +57,7 @@ function ModalContainer({ open, setOpen, onClick, buttonText, postUrl }) {
                     {buttonText === "Copy to clipboard" ? (
                         <Input type="text" value={postUrl} disabled/>
                     ) : (
-                        <form>
+                        <div className="app__signup">
                             <Input
                                 type="email"
                                 placeholder="email"
@@ -70,7 +70,7 @@ function ModalContainer({ open, setOpen, onClick, buttonText, postUrl }) {
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                             />
-                        </form>
+                        </div>
                     )}
                     <Button
                         type={(buttonText !== "Copy to clipboard") ? "submit" : null}

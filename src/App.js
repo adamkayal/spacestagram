@@ -3,7 +3,7 @@ import "./App.css";
 import Post from "./components/Post/Post";
 import { auth } from "./firebase/firebase";
 import axios from "axios";
-import { Button, Grid, TextField } from "@material-ui/core";
+import { Button, TextField } from "@material-ui/core";
 import ModalContainer from "./components/ModalContainer/ModalContainer";
 import Loader from "react-loader-spinner";
 
@@ -16,7 +16,8 @@ function App() {
     const [user, setUser] = useState(null);
 
     const [showLoader, setShowLoader] = useState(false);
-    const [selectedDate, setSelectedDate] = React.useState(new Date());
+    const [startDate, setStartDate] = useState("");
+    const [endDate, setEndDate] = useState("");
 
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged((authUser) => {
@@ -35,11 +36,30 @@ function App() {
     // We do a search at the when the page loads
     useEffect(() => search(), []);
 
-    const search = () => {
+    const search = (event) => {
+        if (event) event.preventDefault();
+
+        let queryString = "count=20";
+        if (startDate) {
+            queryString = `start_date=${startDate}`;
+            if (endDate) {
+                if (
+                    new Date(startDate) <= new Date(endDate) &&
+                    new Date(endDate) <= new Date()
+                ) {
+                    queryString = queryString.concat(`&end_date=${endDate}`);
+                } else {
+                    setEndDate("");
+                }
+            }
+        } else if (endDate) {
+            setEndDate("");
+        }
+
         setShowLoader(true);
         axios
             .get(
-                "https://api.nasa.gov/planetary/apod?api_key=ESNnOstvfNx2gncbFYQtbjIZDCaLKqbg5PM0Xo83&thumbs=True&count=50"
+                `https://api.nasa.gov/planetary/apod?api_key=ESNnOstvfNx2gncbFYQtbjIZDCaLKqbg5PM0Xo83&thumbs=True&${queryString}`
             )
             .then((response) => {
                 setShowLoader(false);
@@ -107,9 +127,11 @@ function App() {
                 />
 
                 {user ? (
-                    <Button onClick={() => auth.signOut()}>Logout</Button>
+                    <div>
+                        <Button onClick={() => auth.signOut()}>Logout</Button>
+                    </div>
                 ) : (
-                    <div className="app__loginContainer">
+                    <div>
                         <Button onClick={() => setOpenSignIn(true)}>
                             Sign In
                         </Button>
@@ -129,6 +151,8 @@ function App() {
                     InputLabelProps={{
                         shrink: true,
                     }}
+                    value={startDate}
+                    onChange={(event) => setStartDate(event.target.value)}
                 />
                 <TextField
                     id="end-date"
@@ -137,8 +161,10 @@ function App() {
                     InputLabelProps={{
                         shrink: true,
                     }}
+                    value={endDate}
+                    onChange={(event) => setEndDate(event.target.value)}
                 />
-                <Button type="submit" onClick={search}>
+                <Button type="submit" onClick={(event) => search(event)}>
                     Search
                 </Button>
             </form>
@@ -153,17 +179,18 @@ function App() {
                     className="app__loader"
                 />
 
-                {posts.map((post, idx) => (
-                    <Post
-                        key={idx}
-                        idx={idx}
-                        isSignedIn={!!user}
-                        setOpenSignIn={setOpenSignIn}
-                        setOpenShare={setOpenShare}
-                        setPostUrl={setPostUrl}
-                        {...post}
-                    />
-                ))}
+                {!showLoader &&
+                    posts.map((post, idx) => (
+                        <Post
+                            key={idx}
+                            idx={idx}
+                            isSignedIn={!!user}
+                            setOpenSignIn={setOpenSignIn}
+                            setOpenShare={setOpenShare}
+                            setPostUrl={setPostUrl}
+                            {...post}
+                        />
+                    ))}
             </div>
         </div>
     );
