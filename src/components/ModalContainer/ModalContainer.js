@@ -1,6 +1,7 @@
-import { Button, Input, makeStyles, Modal } from "@material-ui/core";
+import { Button, Input, Modal } from "@material-ui/core";
 import React, { useState } from "react";
 import PropTypes from "prop-types";
+import "./ModalContainer.css";
 
 function getModalStyle() {
     const top = 50;
@@ -13,27 +14,23 @@ function getModalStyle() {
     };
 }
 
-const useStyles = makeStyles((theme) => ({
-    paper: {
-        position: "absolute",
-        width: 400,
-        backgroundColor: theme.palette.background.paper,
-        border: "2px solid #000",
-        boxShadow: theme.shadows[5],
-        padding: theme.spacing(2, 4, 3),
-    },
-}));
-
-function ModalContainer({ open, setOpen, onClick, buttonText, postUrl }) {
+function ModalContainer({
+    open,
+    setOpen,
+    onClick,
+    buttonText,
+    postUrl,
+    setOpenSignUp,
+}) {
     ModalContainer.propTypes = {
-        open: PropTypes.bool,
-        setOpen: PropTypes.func,
-        onClick: PropTypes.any,
-        buttonText: PropTypes.string,
+        open: PropTypes.bool.isRequired,
+        setOpen: PropTypes.func.isRequired,
+        onClick: PropTypes.any.isRequired,
+        buttonText: PropTypes.string.isRequired,
         postUrl: PropTypes.string,
+        setOpenSignUp: PropTypes.func,
     };
 
-    const classes = useStyles();
     const [modalStyle] = useState(getModalStyle);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -45,7 +42,12 @@ function ModalContainer({ open, setOpen, onClick, buttonText, postUrl }) {
             aria-labelledby="simple-modal-title"
             aria-describedby="simple-modal-description"
         >
-            <div style={modalStyle} className={classes.paper}>
+            <div style={modalStyle} className="modalContainer__paper">
+                {buttonText === "Log In" && (
+                    <div className="modalContainer__message">
+                        Log in to like and comment on posts
+                    </div>
+                )}
                 <div className="app__signup">
                     <center>
                         <img
@@ -54,8 +56,9 @@ function ModalContainer({ open, setOpen, onClick, buttonText, postUrl }) {
                             alt="spacetagram logo"
                         />
                     </center>
+
                     {buttonText === "Copy to clipboard" ? (
-                        <Input type="text" value={postUrl} disabled/>
+                        <Input type="text" value={postUrl} disabled />
                     ) : (
                         <div className="app__signup">
                             <Input
@@ -63,6 +66,7 @@ function ModalContainer({ open, setOpen, onClick, buttonText, postUrl }) {
                                 placeholder="email"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
+                                autoFocus
                             />
                             <Input
                                 type="password"
@@ -72,12 +76,31 @@ function ModalContainer({ open, setOpen, onClick, buttonText, postUrl }) {
                             />
                         </div>
                     )}
+
                     <Button
-                        type={(buttonText !== "Copy to clipboard") ? "submit" : null}
+                        className="modalContainer__button"
+                        type={
+                            buttonText !== "Copy to clipboard" ? "submit" : null
+                        }
                         onClick={(event) => onClick(event, email, password)}
                     >
                         {buttonText}
                     </Button>
+
+                    {buttonText === "Log In" && (
+                        <div className="modalContainer__signUpOfferText">
+                            Don't have an account?
+                            <button
+                                className="modalContainer__buttonLink"
+                                onClick={() => {
+                                    setOpen(false);
+                                    setOpenSignUp(true);
+                                }}
+                            >
+                                Sign up
+                            </button>
+                        </div>
+                    )}
                 </div>
             </div>
         </Modal>

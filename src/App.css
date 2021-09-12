@@ -52,7 +52,27 @@
     border-radius: 5px;
 }
 
+.app__infoIcon {
+    margin-right: 10px;
+}
+
 .app__dateTitle {
     display: flex;
     align-items: center;
+    width: 170px;
+}
+
+@media only screen and (max-width: 600px) {
+    .app__search {
+        flex-direction: column;
+        height: 200px;
+    }
+
+    .app__dateTitle {
+        width: 100%;
+    }
+}
+
+.app__authButtons {
+    text-align: right;
 }

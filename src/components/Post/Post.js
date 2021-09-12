@@ -12,60 +12,44 @@ function Post({
     thumbnail_url,
     url,
     title,
-    isSignedIn,
-    setOpenSignIn,
+    user,
+    setOpenLogIn,
     setOpenShare,
     setPostUrl,
-    isLiked,
 }) {
     Post.propTypes = {
-        idx: PropTypes.number,
+        idx: PropTypes.number.isRequired,
         copyright: PropTypes.string,
-        date: PropTypes.string,
-        explanation: PropTypes.string,
+        date: PropTypes.string.isRequired,
+        explanation: PropTypes.string.isRequired,
         thumbnail_url: PropTypes.string,
         hdurl: PropTypes.string,
         url: PropTypes.string,
-        title: PropTypes.string,
-        isSignedIn: PropTypes.bool,
-        setOpenSignIn: PropTypes.func,
-        setOpenShare: PropTypes.func,
-        setPostUrl: PropTypes.func,
-        isLiked: PropTypes.bool,
+        title: PropTypes.string.isRequired,
+        user: PropTypes.any,
+        setOpenLogIn: PropTypes.func.isRequired,
+        setOpenShare: PropTypes.func.isRequired,
+        setPostUrl: PropTypes.func.isRequired,
     };
 
     const formattedDate = new Date(date).toDateString();
 
     const [liked, setLiked] = useState(false);
+    const [comment, setComment] = useState("");
     const [comments, setComments] = useState([]);
 
     const addLike = () => {
-        if (isSignedIn) {
+        if (user) {
             if (liked) {
                 setLiked(false);
-                // remove like from db
-                // make unheart animation
-                // that should change the heart color from update
             } else if (!liked) {
                 setLiked(true);
-                // add like to db
-                // make heart animation
-                // that should change the heart color from update
             }
-            $(`#overlay${idx}`).fadeIn(400, function () {
-                $(`#overlay${idx}`).fadeOut(400);
+            $(`#overlay_${idx}`).fadeIn(400, function () {
+                $(`#overlay_${idx}`).fadeOut(400);
             });
         } else {
-            setOpenSignIn(true);
-        }
-    };
-
-    const addComment = () => {
-        if (isSignedIn) {
-            alert("added comment !");
-            // add comment to db
-        } else {
-            setOpenSignIn(true);
+            setOpenLogIn(true);
         }
     };
 
@@ -74,11 +58,33 @@ function Post({
         setPostUrl(thumbnail_url || hdurl || url);
     };
 
+    const focusComment = () => {
+        if (user) {
+            document.getElementById(`input_${idx}`).focus();
+        } else {
+            setOpenLogIn(true);
+        }
+    };
+
+    const postComment = (event) => {
+        event.preventDefault();
+        if (user) {
+            setComments([
+                ...comments,
+                {
+                    email: user.displayName,
+                    text: comment,
+                },
+            ]);
+            setComment("");
+        } else {
+            setOpenLogIn(true);
+        }
+    };
+
     return (
         <div className="post">
-            <div className="post__title">
-                <h3>{title}</h3>
-            </div>
+            <p className="post__title">{title}</p>
 
             <div className="post__imageContainer">
                 <img
@@ -95,7 +101,7 @@ function Post({
                 />
 
                 <img
-                    id={`overlay${idx}`}
+                    id={`overlay_${idx}`}
                     className="post__imageOverlay"
                     src={"/heart_icon.png"}
                     alt=""
@@ -106,7 +112,7 @@ function Post({
                 <img
                     className="post__icon"
                     src={
-                        liked
+                        liked && user
                             ? "/heart_icon_liked.png"
                             : "/heart_icon_unliked.png"
                     }
@@ -119,7 +125,7 @@ function Post({
                     src="/comment_icon.png"
                     alt="Comment"
                     title="Comment"
-                    onClick={addComment}
+                    onClick={focusComment}
                 />
                 <img
                     className="post__icon"
@@ -130,10 +136,37 @@ function Post({
                 />
             </div>
 
-            <h4 className="post__text">
+            <p className="post__text">
                 <strong>{copyright}</strong>: {explanation}
-            </h4>
+            </p>
             <p className="post__date">{formattedDate}</p>
+
+            <div>
+                {comments.map((comment, idx) => (
+                    <p key={`comment_${idx}`} className="post__comment">
+                        <strong>{comment.email}</strong> {comment.text}
+                    </p>
+                ))}
+            </div>
+
+            <form className="post__commentBox">
+                <input
+                    id={`input_${idx}`}
+                    className="post__input"
+                    type="text"
+                    placeholder="Add a comment..."
+                    value={comment}
+                    onChange={(e) => setComment(e.target.value)}
+                />
+                <button
+                    className="post__button"
+                    disabled={!comment}
+                    type="submit"
+                    onClick={postComment}
+                >
+                    Post
+                </button>
+            </form>
         </div>
     );
 }

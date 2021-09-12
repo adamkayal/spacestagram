@@ -3,14 +3,16 @@ import "./App.css";
 import Post from "./components/Post/Post";
 import { auth } from "./firebase/firebase";
 import axios from "axios";
-import { Button, TextField } from "@material-ui/core";
+import { Button, TextField, Tooltip } from "@material-ui/core";
 import ModalContainer from "./components/ModalContainer/ModalContainer";
 import Loader from "react-loader-spinner";
+import InfoIcon from "@material-ui/icons/Info";
+import { withStyles } from "@material-ui/core/styles";
 
 function App() {
     const [posts, setPosts] = useState([]);
     const [openSignUp, setOpenSignUp] = useState(false);
-    const [openSignIn, setOpenSignIn] = useState(false);
+    const [openLogIn, setOpenLogIn] = useState(false);
     const [openShare, setOpenShare] = useState(false);
     const [postUrl, setPostUrl] = useState("");
     const [user, setUser] = useState(null);
@@ -39,21 +41,15 @@ function App() {
     const search = (event) => {
         if (event) event.preventDefault();
 
+        // if dates are not correctly selected, we will choose 20 random pictures
         let queryString = "count=20";
         if (startDate) {
+            // if a correct start date is chosen, we add the start_date query string instead
             queryString = `start_date=${startDate}`;
             if (endDate) {
-                if (
-                    new Date(startDate) <= new Date(endDate) &&
-                    new Date(endDate) <= new Date()
-                ) {
-                    queryString = queryString.concat(`&end_date=${endDate}`);
-                } else {
-                    setEndDate("");
-                }
+                // if a correct end date is chosen, we also add the end_date query string
+                queryString = queryString.concat(`&end_date=${endDate}`);
             }
-        } else if (endDate) {
-            setEndDate("");
         }
 
         setShowLoader(true);
@@ -72,28 +68,40 @@ function App() {
     const signUp = (event, email, password) => {
         event.preventDefault();
 
-        auth.createUserWithEmailAndPassword(email, password).catch((error) =>
-            alert(error.message)
-        );
-
-        setOpenSignUp(false);
+        auth.createUserWithEmailAndPassword(email, password)
+            .then(() => setOpenSignUp(false))
+            .catch((error) => alert(error.message));
     };
 
-    const signIn = (event, email, password) => {
+    const logIn = (event, email, password) => {
         event.preventDefault();
 
         console.log({ event }, { email }, { password });
 
         auth.signInWithEmailAndPassword(email, password)
-            .then((authUser) =>
+            .then((authUser) => {
                 authUser.user.updateProfile({
                     displayName: email,
-                })
-            )
+                });
+                setOpenLogIn(false);
+            })
             .catch((error) => alert(error.message));
-
-        setOpenSignIn(false);
     };
+
+    const getTodayString = () => {
+        return new Date().toISOString().slice(0, 10);
+    };
+
+    const HtmlTooltip = withStyles((theme) => ({
+        tooltip: {
+            backgroundColor: "#f5f5f9",
+            color: "rgba(0, 0, 0, 0.87)",
+            maxWidth: 220,
+            fontSize: theme.typography.pxToRem(16),
+            border: "1px solid #dadde9",
+            textAlign: "justify"
+        },
+    }))(Tooltip);
 
     return (
         <div className="app">
@@ -105,10 +113,11 @@ function App() {
             />
 
             <ModalContainer
-                open={openSignIn}
-                setOpen={setOpenSignIn}
-                onClick={signIn}
-                buttonText="Sign In"
+                open={openLogIn}
+                setOpen={setOpenLogIn}
+                onClick={logIn}
+                buttonText="Log In"
+                setOpenSignUp={setOpenSignUp}
             />
 
             <ModalContainer
@@ -131,9 +140,9 @@ function App() {
                         <Button onClick={() => auth.signOut()}>Logout</Button>
                     </div>
                 ) : (
-                    <div>
-                        <Button onClick={() => setOpenSignIn(true)}>
-                            Sign In
+                    <div className="app__authButtons">
+                        <Button onClick={() => setOpenLogIn(true)}>
+                            Log In
                         </Button>
                         <Button onClick={() => setOpenSignUp(true)}>
                             Sign Up
@@ -143,13 +152,21 @@ function App() {
             </div>
 
             <form className="app__search" noValidate>
-                <h4 className="app__dateTitle">Select dates for search:</h4>
+                <div className="app__dateTitle">
+                    <HtmlTooltip title="If no dates are selected, 20 random posts will be shown. If only a start date is selected, the end date will by default be today's date.">
+                        <InfoIcon className="app__infoIcon" aria-label="info" />
+                    </HtmlTooltip>
+                    <p><strong>Select dates for search (optional):</strong></p>
+                </div>
                 <TextField
                     id="start-date"
                     label="Start date"
                     type="date"
                     InputLabelProps={{
                         shrink: true,
+                    }}
+                    InputProps={{
+                        inputProps: { max: getTodayString() },
                     }}
                     value={startDate}
                     onChange={(event) => setStartDate(event.target.value)}
@@ -161,8 +178,12 @@ function App() {
                     InputLabelProps={{
                         shrink: true,
                     }}
+                    InputProps={{
+                        inputProps: { min: startDate, max: getTodayString() },
+                    }}
                     value={endDate}
                     onChange={(event) => setEndDate(event.target.value)}
+                    disabled={!startDate}
                 />
                 <Button type="submit" onClick={(event) => search(event)}>
                     Search
@@ -184,8 +205,8 @@ function App() {
                         <Post
                             key={idx}
                             idx={idx}
-                            isSignedIn={!!user}
-                            setOpenSignIn={setOpenSignIn}
+                            user={user}
+                            setOpenLogIn={setOpenLogIn}
                             setOpenShare={setOpenShare}
                             setPostUrl={setPostUrl}
                             {...post}
