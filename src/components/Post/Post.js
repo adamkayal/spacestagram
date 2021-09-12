@@ -112,7 +112,7 @@ function Post({
                     id={`overlay_${idx}`}
                     className="post__imageOverlay"
                     src={"/heart_icon.png"}
-                    alt=""
+                    alt="Heart"
                 />
             </div>
 
