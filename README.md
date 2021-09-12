@@ -1,10 +1,28 @@
 # Spacestagram
-Image-sharing application created as part of the application process for the Shopify Front End Developer Intern Challenge (Winter 2022).
+Image-sharing application created as part of the application process for the Shopify Front End Developer Intern Challenge (Winter 2022). It uses Firebase for user authentication, deployment and hosting.
 
 **[Click here to view the deployed version](https://adamkayal-spacestagram.web.app/)**
 
-## How to run locally
+## How to run the app locally
+1. Download this repository to your local machine
+````shell
+git clone https://github.com/adamkayal/spacestagram.git
+````
+2. Install the dependencies
+````shell
+npm install
+````
+3. Run the app in the development mode
+````shell
+npm start
+````
+4. Open [http://localhost:3000](http://localhost:3000) to view the app in the browser.
 
+## How to run the test suites
+In the project directory, run the command
+````shell
+npm test
+````
 
 
 ## Features
@@ -12,7 +30,7 @@ Image-sharing application created as part of the application process for the Sho
 ![Signing up](/readme-assets/signUp.gif)
 
 * Animation when the user likes a post
-  * A like is fired if the like button is clicked or if the user double clicks on the picture.
+  * A like is fired if the like button is clicked on or if the user double clicks on the picture.
   * If the user is not logged in, he is prompted to do so.
 ![Liking a post](/readme-assets/like.gif)
 
