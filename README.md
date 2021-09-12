@@ -1,5 +1,5 @@
 # Spacestagram
-Image-sharing application created as part of the application process for the Shopify Front End Developer Intern Challenge (Winter 2022). It uses Firebase for user authentication, deployment and hosting.
+Image-sharing application created as part of the application process for the Shopify Front End Developer Intern Challenge (Winter 2022). It uses ReactJS (Hooks), Axios to perform the GET request to NASA's API, and Firebase for user authentication, deployment and hosting.
 
 **[Click here to view the deployed version](https://adamkayal-spacestagram.web.app/)**
 
