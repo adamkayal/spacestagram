@@ -3,6 +3,7 @@ import "./App.css";
 import Post from "./components/Post/Post";
 import { auth } from "./firebase/firebase";
 import axios from "axios";
+import axiosRetry from "axios-retry";
 import { Button, TextField, Tooltip } from "@material-ui/core";
 import ModalContainer from "./components/ModalContainer/ModalContainer";
 import Loader from "react-loader-spinner";
@@ -21,6 +22,10 @@ function App() {
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
 
+    // will retry the GET request up to 3 times if something goes wrong
+    axiosRetry(axios, { retries: 3 });
+
+    // we set a listener on the user object
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged((authUser) => {
             if (authUser) {
@@ -35,9 +40,11 @@ function App() {
         };
     }, [user]);
 
-    // We do a search at the when the page loads
+    // we do a search at the when the page loads
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(() => search(), []);
 
+    // this function fetches 
     const search = (event) => {
         if (event) event.preventDefault();
 
@@ -60,14 +67,18 @@ function App() {
             .then((response) => {
                 setShowLoader(false);
                 setPosts(response.data);
-                console.log(response.data);
             })
-            .catch((error) => console.error("There was an error!", error));
+            .catch((error) => {
+                alert("API call failed after 3 retry attempts. Please try again.");
+                console.error(error);
+                setShowLoader(false);
+            });
     };
 
     const signUp = (event, email, password) => {
         event.preventDefault();
 
+        // we sign up the user with firebase
         auth.createUserWithEmailAndPassword(email, password)
             .then(() => setOpenSignUp(false))
             .catch((error) => alert(error.message));
@@ -76,8 +87,7 @@ function App() {
     const logIn = (event, email, password) => {
         event.preventDefault();
 
-        console.log({ event }, { email }, { password });
-
+        // we log in the user with firebase
         auth.signInWithEmailAndPassword(email, password)
             .then((authUser) => {
                 authUser.user.updateProfile({
@@ -88,6 +98,8 @@ function App() {
             .catch((error) => alert(error.message));
     };
 
+    // handy function to get the correct date format of today's
+    // date for the date selectors
     const getTodayString = () => {
         return new Date().toISOString().slice(0, 10);
     };
@@ -99,7 +111,7 @@ function App() {
             maxWidth: 220,
             fontSize: theme.typography.pxToRem(16),
             border: "1px solid #dadde9",
-            textAlign: "justify"
+            textAlign: "justify",
         },
     }))(Tooltip);
 
@@ -156,7 +168,9 @@ function App() {
                     <HtmlTooltip title="If no dates are selected, 20 random posts will be shown. If only a start date is selected, the end date will by default be today's date.">
                         <InfoIcon className="app__infoIcon" aria-label="info" />
                     </HtmlTooltip>
-                    <p><strong>Select dates for search (optional):</strong></p>
+                    <p>
+                        <strong>Select dates for search (optional):</strong>
+                    </p>
                 </div>
                 <TextField
                     id="start-date"

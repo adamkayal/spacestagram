@@ -40,35 +40,40 @@ function Post({
 
     const addLike = () => {
         if (user) {
-            if (liked) {
-                setLiked(false);
-            } else if (!liked) {
-                setLiked(true);
-            }
+            // if the user is logged in
+            // we toggle the like state
+            setLiked(!liked);
+
+            // heart animation
             $(`#overlay_${idx}`).fadeIn(400, function () {
                 $(`#overlay_${idx}`).fadeOut(400);
             });
         } else {
+            // if the user is not logged in, we prompt him to log in 
             setOpenLogIn(true);
         }
     };
 
     const share = () => {
-        setOpenShare(true);
         setPostUrl(thumbnail_url || hdurl || url);
+        setOpenShare(true);
     };
 
     const focusComment = () => {
         if (user) {
+            // if the user is logged in, we focus the comment input
             document.getElementById(`input_${idx}`).focus();
         } else {
+            // if the user is not logged in, we prompt him to log in 
             setOpenLogIn(true);
         }
     };
 
     const postComment = (event) => {
         event.preventDefault();
+
         if (user) {
+            // if the user is logged in, we add the new comment
             setComments([
                 ...comments,
                 {
@@ -76,8 +81,11 @@ function Post({
                     text: comment,
                 },
             ]);
+
+            // and clear the comment input
             setComment("");
         } else {
+            // if the user is not logged in, we prompt him to log in 
             setOpenLogIn(true);
         }
     };
