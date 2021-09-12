@@ -42,7 +42,7 @@ function ModalContainer({
             aria-labelledby="simple-modal-title"
             aria-describedby="simple-modal-description"
         >
-            <div style={modalStyle} className="modalContainer__paper">
+            <form style={modalStyle} className="modalContainer__paper">
                 {buttonText === "Log In" && (
                     <div className="modalContainer__message">
                         Log in to like and comment on posts
@@ -102,7 +102,7 @@ function ModalContainer({
                         </div>
                     )}
                 </div>
-            </div>
+            </form>
         </Modal>
     );
 }
