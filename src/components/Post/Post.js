@@ -32,8 +32,6 @@ function Post({
         setPostUrl: PropTypes.func.isRequired,
     };
 
-    const formattedDate = new Date(date).toDateString();
-
     const [liked, setLiked] = useState(false);
     const [comment, setComment] = useState("");
     const [comments, setComments] = useState([]);
@@ -147,7 +145,7 @@ function Post({
             <p className="post__text">
                 <strong>{copyright}</strong>: {explanation}
             </p>
-            <p className="post__date">{formattedDate}</p>
+            <p className="post__date">{date}</p>
 
             <div>
                 {comments.map((comment, idx) => (
