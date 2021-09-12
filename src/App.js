@@ -75,6 +75,7 @@ function App() {
             });
     };
 
+    // function that handles the sign up
     const signUp = (event, email, password) => {
         event.preventDefault();
 
@@ -84,6 +85,7 @@ function App() {
             .catch((error) => alert(error.message));
     };
 
+    // function that handles the log in
     const logIn = (event, email, password) => {
         event.preventDefault();
 
@@ -97,6 +99,15 @@ function App() {
             })
             .catch((error) => alert(error.message));
     };
+
+    // function that copies the post url to the clipboard
+    const copyToClipboard = (event) => {
+        event.preventDefault();
+
+        // we copy the url to the clipboard and close the modal
+        navigator.clipboard.writeText(postUrl)
+        setOpenShare(false);
+    }
 
     // handy function to get the correct date format of today's
     // date for the date selectors
@@ -135,7 +146,7 @@ function App() {
             <ModalContainer
                 open={openShare}
                 setOpen={setOpenShare}
-                onClick={() => navigator.clipboard.writeText(postUrl)}
+                onClick={copyToClipboard}
                 buttonText="Copy to clipboard"
                 postUrl={postUrl}
             />
