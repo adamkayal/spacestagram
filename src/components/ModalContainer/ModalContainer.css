@@ -7,6 +7,18 @@
     text-align: center;
     font-weight: 500;
 }
+
+.modalContainer__signup {
+    display: flex;
+    flex-direction: column;
+}
+
+.modalContainer__headerImage {
+    background-color: white;
+    object-fit: contain;
+    margin-bottom: 10px;
+}
+
 .modalContainer__paper {
     position: absolute;
     width: 75%;
@@ -15,10 +27,12 @@
     padding: 20px;
     border-radius: 10px;
 }
+
 .modalContainer__button {
     background-color: #0095f6 !important;
     margin-top: 10px !important;
 }
+
 .modalContainer__signUpOfferText {
     text-align: center;
     margin-top: 15px;
@@ -29,6 +43,7 @@
     border-top: 1px solid lightgray;
     border-bottom: 1px solid lightgray;
 }
+
 .modalContainer__buttonLink {
     background: none !important;
     border: none;
@@ -41,6 +56,6 @@
     font-size: 16px;
 }
 
-buttonLink:hover {
+.modalContainer__buttonLink:hover {
     text-decoration: underline;
 }

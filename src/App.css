@@ -21,11 +21,6 @@
     margin-bottom: 10px;
 }
 
-.app__signup {
-    display: flex;
-    flex-direction: column;
-}
-
 .app__posts {
     display: flex;
     flex-direction: column;

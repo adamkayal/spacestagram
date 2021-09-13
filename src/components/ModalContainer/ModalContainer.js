@@ -41,6 +41,7 @@ function ModalContainer({
             onClose={() => setOpen(false)}
             aria-labelledby="simple-modal-title"
             aria-describedby="simple-modal-description"
+            data-testid="modal"
         >
             <form style={modalStyle} className="modalContainer__paper">
                 {buttonText === "Log In" && (
@@ -48,31 +49,39 @@ function ModalContainer({
                         Log in to like and comment on posts
                     </div>
                 )}
-                <div className="app__signup">
+                <div className="modalContainer__signup">
                     <center>
                         <img
-                            className="app__headerImage"
+                            className="modalContainer__headerImage"
                             src="/logo.png"
                             alt="spacetagram logo"
+                            data-testid="logo"
                         />
                     </center>
 
                     {buttonText === "Copy to clipboard" ? (
-                        <Input type="text" value={postUrl} disabled />
+                        <Input
+                            type="text"
+                            value={postUrl}
+                            disabled
+                            data-testid="copyInput"
+                        />
                     ) : (
-                        <div className="app__signup">
+                        <div className="modalContainer__signup">
                             <Input
                                 type="email"
                                 placeholder="email"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 autoFocus
+                                data-testid="emailInput"
                             />
                             <Input
                                 type="password"
                                 placeholder="password"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
+                                data-testid="passwordInput"
                             />
                         </div>
                     )}
@@ -88,7 +97,10 @@ function ModalContainer({
                     </Button>
 
                     {buttonText === "Log In" && (
-                        <div className="modalContainer__signUpOfferText">
+                        <div
+                            className="modalContainer__signUpOfferText"
+                            data-testid="signUpOffer"
+                        >
                             Don't have an account?
                             <button
                                 className="modalContainer__buttonLink"

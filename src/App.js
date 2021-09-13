@@ -156,6 +156,7 @@ function App() {
                     className="app__headerImage"
                     src="/logo.png"
                     alt="spacetagram logo"
+                    data-testid="logo"
                 />
 
                 {user ? (
@@ -185,6 +186,7 @@ function App() {
                 </div>
                 <TextField
                     id="start-date"
+                    data-testid="startDate"
                     label="Start date"
                     type="date"
                     InputLabelProps={{
@@ -198,6 +200,7 @@ function App() {
                 />
                 <TextField
                     id="end-date"
+                    data-testid="endDate"
                     label="End date"
                     type="date"
                     InputLabelProps={{

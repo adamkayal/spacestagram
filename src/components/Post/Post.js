@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import $ from "jquery";
 import "./Post.css";
@@ -36,6 +36,13 @@ function Post({
     const [comment, setComment] = useState("");
     const [comments, setComments] = useState([]);
 
+    // we remove all likes if the user is not logged in
+    useEffect(() => {
+        if (!user) {
+            setLiked(false);
+        }
+    }, [user]);
+
     const addLike = () => {
         if (user) {
             // if the user is logged in
@@ -47,7 +54,7 @@ function Post({
                 $(`#overlay_${idx}`).fadeOut(400);
             });
         } else {
-            // if the user is not logged in, we prompt him to log in 
+            // if the user is not logged in, we prompt him to log in
             setOpenLogIn(true);
         }
     };
@@ -62,7 +69,7 @@ function Post({
             // if the user is logged in, we focus the comment input
             document.getElementById(`input_${idx}`).focus();
         } else {
-            // if the user is not logged in, we prompt him to log in 
+            // if the user is not logged in, we prompt him to log in
             setOpenLogIn(true);
         }
     };
@@ -75,7 +82,7 @@ function Post({
             setComments([
                 ...comments,
                 {
-                    email: user.displayName,
+                    email: user.email,
                     text: comment,
                 },
             ]);
@@ -83,14 +90,16 @@ function Post({
             // and clear the comment input
             setComment("");
         } else {
-            // if the user is not logged in, we prompt him to log in 
+            // if the user is not logged in, we prompt him to log in
             setOpenLogIn(true);
         }
     };
 
     return (
         <div className="post">
-            <p className="post__title">{title}</p>
+            <p className="post__title" data-testid="title">
+                {title}
+            </p>
 
             <div className="post__imageContainer">
                 <img
@@ -104,6 +113,7 @@ function Post({
                     alt={title}
                     title={title}
                     onDoubleClick={addLike}
+                    data-testid="postImage"
                 />
 
                 <img
@@ -125,6 +135,7 @@ function Post({
                     alt="Like"
                     title="Like"
                     onClick={addLike}
+                    data-testid="likeBtn"
                 />
                 <img
                     className="post__icon"
@@ -132,6 +143,7 @@ function Post({
                     alt="Comment"
                     title="Comment"
                     onClick={focusComment}
+                    data-testid="commentBtn"
                 />
                 <img
                     className="post__icon"
@@ -142,12 +154,12 @@ function Post({
                 />
             </div>
 
-            <p className="post__text">
+            <p className="post__text" data-testid="postText">
                 <strong>{copyright}</strong>: {explanation}
             </p>
             <p className="post__date">{date}</p>
 
-            <div>
+            <div data-testid="postComments">
                 {comments.map((comment, idx) => (
                     <p key={`comment_${idx}`} className="post__comment">
                         <strong>{comment.email}</strong> {comment.text}
@@ -163,12 +175,14 @@ function Post({
                     placeholder="Add a comment..."
                     value={comment}
                     onChange={(e) => setComment(e.target.value)}
+                    data-testid="commentInput"
                 />
                 <button
                     className="post__button"
                     disabled={!comment}
                     type="submit"
                     onClick={postComment}
+                    data-testid="commentPostBtn"
                 >
                     Post
                 </button>
