@@ -46,3 +46,6 @@ npm test
 * Possibility to comment on posts
   * If the user is not logged in, he is prompted to do so.
 ![Commenting on a post](/readme-assets/comment.gif)
+
+* Responsive design
+![Commenting on a post](/readme-assets/responsive.gif)
