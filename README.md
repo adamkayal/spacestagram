@@ -21,7 +21,7 @@ npm start
 ## How to run the test suites
 In the project directory, run the command
 ````shell
-npm test
+npm test -- --watchAll
 ````
 
 
