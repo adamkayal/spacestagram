@@ -20,7 +20,7 @@ test("Testing if the logo is rendered", () => {
 test("Testing if the end date selector is disabled", () => {
     const endDate = getByTestId("endDate");
 
-    expect(endDate.lastChild.firstChild.disabled).toBe(true);
+    expect(endDate.lastChild.firstChild.disabled).toBe(true); // .lastChild.firstChild to select the input inside the TextField component
 });
 
 test("Testing if the max of the start and end date selectors is today's date", () => {

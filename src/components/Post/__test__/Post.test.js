@@ -76,11 +76,14 @@ test("Testing the like functionality if the user not logged in", () => {
     const likeBtn = getByTestId("likeBtn");
     const postImage = getByTestId("postImage");
 
+    // the post is not liked at first
     expect(likeBtn.src).toBe("http://localhost/heart_icon_unliked.png");
 
+     // if the user isn't logged in, nothing should happen
     fireEvent.click(likeBtn);
     expect(likeBtn.src).toBe("http://localhost/heart_icon_unliked.png");
 
+     // if the user isn't logged in, nothing should happen
     fireEvent.doubleClick(postImage);
     expect(likeBtn.src).toBe("http://localhost/heart_icon_unliked.png");
 });

@@ -22,8 +22,11 @@ function App() {
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
 
-    // will retry the GET request up to 3 times if something goes wrong
-    axiosRetry(axios, { retries: 3 });
+    // will retry the GET request up to 3 times if there is an internal server error
+    axiosRetry(axios, {
+        retries: 3,
+        retryCondition: (error) => error.response.status === 500,
+    });
 
     // we set a listener on the user object
     useEffect(() => {
@@ -44,7 +47,7 @@ function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(() => search(), []);
 
-    // this function fetches 
+    // this function fetches
     const search = (event) => {
         if (event) event.preventDefault();
 
@@ -79,7 +82,7 @@ function App() {
     const signUp = (event, email, password) => {
         event.preventDefault();
 
-        // we sign up the user with firebase
+        // we create the user with firebase
         auth.createUserWithEmailAndPassword(email, password)
             .then(() => setOpenSignUp(false))
             .catch((error) => alert(error.message));
@@ -105,9 +108,9 @@ function App() {
         event.preventDefault();
 
         // we copy the url to the clipboard and close the modal
-        navigator.clipboard.writeText(postUrl)
+        navigator.clipboard.writeText(postUrl);
         setOpenShare(false);
-    }
+    };
 
     // handy function to get the correct date format of today's
     // date for the date selectors
@@ -221,7 +224,7 @@ function App() {
             <div className="app__posts">
                 <Loader
                     type="Circles"
-                    color="#00BFFF"
+                    color="#0095f6"
                     height={200}
                     width={200}
                     visible={showLoader}

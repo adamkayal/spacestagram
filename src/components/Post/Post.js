@@ -43,6 +43,7 @@ function Post({
         }
     }, [user]);
 
+    // function that adds the like
     const addLike = () => {
         if (user) {
             // if the user is logged in
@@ -59,11 +60,13 @@ function Post({
         }
     };
 
+    // function that opens the share dialog
     const share = () => {
         setPostUrl(thumbnail_url || hdurl || url);
         setOpenShare(true);
     };
 
+    // function that focuses the comment input if the user is logged in
     const focusComment = () => {
         if (user) {
             // if the user is logged in, we focus the comment input
@@ -74,6 +77,7 @@ function Post({
         }
     };
 
+    // function that handles the addition of a comment
     const postComment = (event) => {
         event.preventDefault();
 
@@ -97,9 +101,9 @@ function Post({
 
     return (
         <div className="post">
-            <p className="post__title" data-testid="title">
+            <h2 className="post__title" data-testid="title">
                 {title}
-            </p>
+            </h2>
 
             <div className="post__imageContainer">
                 <img
