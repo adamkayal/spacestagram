@@ -174,7 +174,7 @@ function Post({
             <p className="post__date">{date}</p>
 
             <div data-testid="postComments">
-                {comments.map((comment, idx) => (
+                {(comments || []).map((comment, idx) => (
                     <p key={`comment_${idx}`} className="post__comment">
                         <strong>{comment.email}</strong> {comment.text}
                     </p>

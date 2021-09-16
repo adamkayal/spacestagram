@@ -247,7 +247,7 @@ function App() {
                 />
 
                 {!showLoader &&
-                    posts.map((post, idx) => (
+                    (posts || []).map((post, idx) => (
                         <Post
                             key={idx}
                             idx={idx}
