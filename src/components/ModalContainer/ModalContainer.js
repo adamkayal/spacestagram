@@ -2,6 +2,7 @@ import { Button, Input, Modal } from "@material-ui/core";
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import "./ModalContainer.css";
+import { validate } from 'email-validator';
 
 function getModalStyle() {
     const top = 50;
@@ -74,13 +75,17 @@ function ModalContainer({
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 autoFocus
-                                data-testid="emailInput"
+                                error={!validate(email)}
+                                required
+                                data-testid="emailInput"s
                             />
                             <Input
                                 type="password"
                                 placeholder="password"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
+                                error={password.length < 6}
+                                required
                                 data-testid="passwordInput"
                             />
                         </div>
@@ -91,6 +96,7 @@ function ModalContainer({
                         type={
                             buttonText !== "Copy to clipboard" ? "submit" : null
                         }
+                        disabled={buttonText !== "Copy to clipboard" && (!validate(email) || password.length < 6)}
                         onClick={(event) => onClick(event, email, password)}
                     >
                         {buttonText}
