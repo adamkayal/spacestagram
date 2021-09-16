@@ -8,6 +8,7 @@ function Post({
     copyright = "NASA",
     date,
     explanation,
+    media_type,
     hdurl,
     thumbnail_url,
     url,
@@ -22,6 +23,7 @@ function Post({
         copyright: PropTypes.string,
         date: PropTypes.string.isRequired,
         explanation: PropTypes.string.isRequired,
+        media_type: PropTypes.string.isRequired,
         thumbnail_url: PropTypes.string,
         hdurl: PropTypes.string,
         url: PropTypes.string,
@@ -106,20 +108,31 @@ function Post({
             </h2>
 
             <div className="post__imageContainer">
-                <img
-                    className="post__image"
-                    src={
-                        thumbnail_url ||
-                        hdurl ||
-                        url ||
-                        "/no_image_available.jpg"
-                    }
-                    alt={title}
-                    title={title}
-                    onDoubleClick={addLike}
-                    data-testid="postImage"
-                />
-
+                {media_type === "video" ? (
+                    <iframe
+                        className="post__video"
+                        src={
+                            hdurl ||
+                            url ||
+                            "/no_video_available.mp4"
+                        }
+                        title={title}                     
+                    />
+                ) : (
+                    <img
+                        className="post__image"
+                        src={
+                            thumbnail_url ||
+                            hdurl ||
+                            url ||
+                            "/no_image_available.jpg"
+                        }
+                        alt={title}
+                        title={title}
+                        onDoubleClick={addLike}
+                        data-testid="postImage"
+                    />
+                )}
                 <img
                     id={`overlay_${idx}`}
                     className="post__imageOverlay"

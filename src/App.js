@@ -52,7 +52,7 @@ function App() {
         if (event) event.preventDefault();
 
         // if dates are not correctly selected, we will choose 20 random pictures
-        let queryString = "count=20";
+        let queryString = "count=3";
         if (startDate) {
             // if a correct start date is chosen, we add the start_date query string instead
             queryString = `start_date=${startDate}`;
@@ -65,7 +65,7 @@ function App() {
         setShowLoader(true);
         axios
             .get(
-                `https://api.nasa.gov/planetary/apod?api_key=ESNnOstvfNx2gncbFYQtbjIZDCaLKqbg5PM0Xo83&thumbs=True&${queryString}`
+                `https://api.nasa.gov/planetary/apod?api_key=ESNnOstvfNx2gncbFYQtbjIZDCaLKqbg5PM0Xo83&${queryString}`
             )
             .then((response) => {
                 setShowLoader(false);
@@ -180,7 +180,7 @@ function App() {
 
             <form className="app__search" noValidate>
                 <div className="app__dateTitle">
-                    <HtmlTooltip title="If no dates are selected, 20 random posts will be shown. If only a start date is selected, the end date will by default be today's date.">
+                    <HtmlTooltip title="If no dates are selected, 3 random posts will be shown. If only a start date is selected, the end date will by default be today's date.">
                         <InfoIcon className="app__infoIcon" aria-label="info" />
                     </HtmlTooltip>
                     <p>

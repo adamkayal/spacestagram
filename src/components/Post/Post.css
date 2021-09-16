@@ -24,10 +24,18 @@
 
 .post__image {
     width: 100%;
+    min-height: 50vh;
     max-height: 80vh;
     object-fit: contain;
     border-top: 1px solid lightgray;
     border-bottom: 1px solid lightgray;
+}
+
+.post__video {
+    width: 100%;
+    min-height: 50vh;
+    object-fit: contain;
+    border: 1px solid lightgray;
 }
 
 .post__imageOverlay {
