@@ -8,8 +8,9 @@ Image-sharing application created as part of the application process for the Sho
 ````shell
 git clone https://github.com/adamkayal/spacestagram.git
 ````
-2. Install the dependencies
+2. In the project directory, install the dependencies
 ````shell
+cd spacestagram
 npm install
 ````
 3. Run the app in the development mode
