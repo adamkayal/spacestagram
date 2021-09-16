@@ -111,12 +111,9 @@ function Post({
                 {media_type === "video" ? (
                     <iframe
                         className="post__video"
-                        src={
-                            hdurl ||
-                            url ||
-                            "/no_video_available.mp4"
-                        }
+                        src={hdurl || url}
                         title={title}
+                        data-testid="postVideo"
                     />
                 ) : (
                     <img

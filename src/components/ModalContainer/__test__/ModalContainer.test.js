@@ -2,12 +2,14 @@ import React from "react";
 import ModalContainer from "../ModalContainer";
 import { render, fireEvent } from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect";
+import { createTheme } from "@material-ui/core/styles";
 
 const requiredProps = {
     open: true,
     setOpen: (param) => param,
     onClick: (param) => param,
     buttonText: "Sign Up",
+    theme: createTheme()
 };
 
 test("Testing if the modal is rendered when open prop is true", () => {

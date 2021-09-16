@@ -8,6 +8,7 @@ const requiredProps = {
     date: "2020-01-01",
     explanation: "explanation",
     title: "title",
+    media_type: "image",
     setOpenLogIn: (param) => param,
     setOpenShare: (param) => param,
     setPostUrl: (param) => param,
@@ -17,9 +18,24 @@ const testUser = {
     email: "test user",
 };
 
+test("Testing if the iframe renders if the media type is video", () => {
+    const { getByTestId } = render(
+        <Post
+            {...requiredProps}
+            media_type="video"
+        />
+    )
+    const postVideo = getByTestId("postVideo");
+
+    expect(postVideo).toBeInTheDocument();
+})
+
 test("Testing if the post image renders if an image url is passed to the component", () => {
     const { getByTestId } = render(
-        <Post thumbnail_url="https://apod.nasa.gov/apod/image/0710/sn2005ap_het_big.jpg" />
+        <Post
+            {...requiredProps}
+            thumbnail_url="https://apod.nasa.gov/apod/image/0710/sn2005ap_het_big.jpg"
+        />
     );
     const postImage = getByTestId("postImage");
 
@@ -79,11 +95,11 @@ test("Testing the like functionality if the user not logged in", () => {
     // the post is not liked at first
     expect(likeBtn.src).toBe("http://localhost/heart_icon_unliked.png");
 
-     // if the user isn't logged in, nothing should happen
+    // if the user isn't logged in, nothing should happen
     fireEvent.click(likeBtn);
     expect(likeBtn.src).toBe("http://localhost/heart_icon_unliked.png");
 
-     // if the user isn't logged in, nothing should happen
+    // if the user isn't logged in, nothing should happen
     fireEvent.doubleClick(postImage);
     expect(likeBtn.src).toBe("http://localhost/heart_icon_unliked.png");
 });
@@ -145,7 +161,7 @@ test("Testing the comment functionality if the user is logged in", () => {
     const commentInput = getByTestId("commentInput");
     const commentPostBtn = getByTestId("commentPostBtn");
     const postComments = getByTestId("postComments");
-    
+
     // clicking the comment btn should focus the comment input
     fireEvent.click(commentBtn);
     expect(document.activeElement).toBe(commentInput);
