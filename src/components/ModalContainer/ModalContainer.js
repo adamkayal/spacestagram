@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import "./ModalContainer.css";
 import { validate } from 'email-validator';
+import { ThemeProvider } from "@material-ui/core/styles";
 
 function getModalStyle() {
     const top = 50;
@@ -22,6 +23,7 @@ function ModalContainer({
     buttonText,
     postUrl,
     setOpenSignUp,
+    theme
 }) {
     ModalContainer.propTypes = {
         open: PropTypes.bool.isRequired,
@@ -30,6 +32,7 @@ function ModalContainer({
         buttonText: PropTypes.string.isRequired,
         postUrl: PropTypes.string,
         setOpenSignUp: PropTypes.func,
+        theme: PropTypes.object.isRequired
     };
 
     const [modalStyle] = useState(getModalStyle);
@@ -91,16 +94,20 @@ function ModalContainer({
                         </div>
                     )}
 
-                    <Button
-                        className="modalContainer__button"
-                        type={
-                            buttonText !== "Copy to clipboard" ? "submit" : null
-                        }
-                        disabled={buttonText !== "Copy to clipboard" && (!validate(email) || password.length < 6)}
-                        onClick={(event) => onClick(event, email, password)}
-                    >
-                        {buttonText}
-                    </Button>
+                    <ThemeProvider theme={theme}>
+                        <Button
+                            className="modalContainer__button"
+                            type={
+                                buttonText !== "Copy to clipboard" ? "submit" : null
+                            }
+                            disabled={buttonText !== "Copy to clipboard" && (!validate(email) || password.length < 6)}
+                            onClick={(event) => onClick(event, email, password)}
+                            variant="contained"
+                            color="primary"
+                        >
+                            {buttonText}
+                        </Button>
+                    </ThemeProvider>
 
                     {buttonText === "Log In" && (
                         <div

@@ -8,7 +8,15 @@ import { Button, TextField, Tooltip } from "@material-ui/core";
 import ModalContainer from "./components/ModalContainer/ModalContainer";
 import Loader from "react-loader-spinner";
 import InfoIcon from "@material-ui/icons/Info";
-import { withStyles } from "@material-ui/core/styles";
+import { withStyles, createTheme, ThemeProvider } from "@material-ui/core/styles";
+
+const theme = createTheme({
+  palette: {
+    primary: {
+        main: '#0095f6'
+    }
+  },
+});
 
 function App() {
     const [posts, setPosts] = useState([]);
@@ -38,9 +46,7 @@ function App() {
             }
         });
 
-        return () => {
-            unsubscribe();
-        };
+        return () => unsubscribe()
     }, [user]);
 
     // we do a search at the when the page loads
@@ -136,6 +142,7 @@ function App() {
                 setOpen={setOpenSignUp}
                 onClick={signUp}
                 buttonText="Sign Up"
+                theme={theme}
             />
 
             <ModalContainer
@@ -144,6 +151,7 @@ function App() {
                 onClick={logIn}
                 buttonText="Log In"
                 setOpenSignUp={setOpenSignUp}
+                theme={theme}
             />
 
             <ModalContainer
@@ -152,6 +160,7 @@ function App() {
                 onClick={copyToClipboard}
                 buttonText="Copy to clipboard"
                 postUrl={postUrl}
+                theme={theme}
             />
 
             <div className="app__header">
@@ -163,17 +172,21 @@ function App() {
                 />
 
                 {user ? (
-                    <div>
-                        <Button onClick={() => auth.signOut()}>Logout</Button>
-                    </div>
+                    <ThemeProvider theme={theme}>
+                        <Button onClick={() => auth.signOut()} variant="contained" color="primary">Logout</Button>
+                    </ThemeProvider>
                 ) : (
                     <div className="app__authButtons">
-                        <Button onClick={() => setOpenLogIn(true)}>
-                            Log In
-                        </Button>
-                        <Button onClick={() => setOpenSignUp(true)}>
-                            Sign Up
-                        </Button>
+                        <ThemeProvider theme={theme}>
+                            <Button onClick={() => setOpenLogIn(true)} variant="contained" color="primary">
+                                Log In
+                            </Button>
+                        </ThemeProvider>
+                        <ThemeProvider theme={theme}>
+                            <Button onClick={() => setOpenSignUp(true)} variant="contained" color="primary">
+                                Sign Up
+                            </Button>
+                        </ThemeProvider>
                     </div>
                 )}
             </div>
@@ -216,9 +229,11 @@ function App() {
                     onChange={(event) => setEndDate(event.target.value)}
                     disabled={!startDate}
                 />
-                <Button type="submit" onClick={(event) => search(event)}>
-                    Search
-                </Button>
+                <ThemeProvider theme={theme}>
+                    <Button type="submit" onClick={(event) => search(event)} variant="contained" color="primary">
+                        Search
+                    </Button>
+                </ThemeProvider>
             </form>
 
             <div className="app__posts">

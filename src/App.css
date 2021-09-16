@@ -70,4 +70,13 @@
 
 .app__authButtons {
     text-align: right;
+    width: 180px;
+    display: flex;
+    justify-content: space-between;
+}
+
+@media only screen and (max-width: 400px) {
+    .app__authButtons {
+        display: none;
+    }
 }
