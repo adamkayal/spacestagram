@@ -11,11 +11,11 @@ import InfoIcon from "@material-ui/icons/Info";
 import { withStyles, createTheme, ThemeProvider } from "@material-ui/core/styles";
 
 const theme = createTheme({
-  palette: {
-    primary: {
-        main: '#0095f6'
-    }
-  },
+    palette: {
+        primary: {
+            main: '#0095f6'
+        }
+    },
 });
 
 function App() {

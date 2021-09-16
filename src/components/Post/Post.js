@@ -116,7 +116,7 @@ function Post({
                             url ||
                             "/no_video_available.mp4"
                         }
-                        title={title}                     
+                        title={title}
                     />
                 ) : (
                     <img
