@@ -24,7 +24,6 @@
 
 .post__image {
     width: 100%;
-    min-height: 50vh;
     max-height: 80vh;
     object-fit: contain;
     border-top: 1px solid lightgray;
