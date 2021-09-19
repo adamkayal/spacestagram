@@ -9,6 +9,7 @@ const requiredProps = {
     setOpen: (param) => param,
     onClick: (param) => param,
     buttonText: "Sign Up",
+    isUserForm: true,
     theme: createTheme()
 };
 
@@ -19,16 +20,16 @@ test("Testing if the modal is rendered when open prop is true", () => {
     expect(modal).toBeInTheDocument();
 });
 
-test("If the button text is 'Copy to clipboard', the input should be disabled", () => {
+test("If isUserForm is false, the input should be disabled", () => {
     const { getByTestId } = render(
-        <ModalContainer {...requiredProps} buttonText="Copy to clipboard" />
+        <ModalContainer {...requiredProps} isUserForm={false} />
     );
     const copyInput = getByTestId("copyInput");
 
     expect(copyInput.firstChild.disabled).toBe(true); // .firstChild to select the input inside the Input component
 });
 
-test("If the button text is not 'Copy to clipboard', the inputs should accept values", () => {
+test("If isUserForm is true, the inputs should accept values", () => {
     const { getByTestId } = render(<ModalContainer {...requiredProps} />);
     const emailInput = getByTestId("emailInput");
     const passwordInput = getByTestId("passwordInput");

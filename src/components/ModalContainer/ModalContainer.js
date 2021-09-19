@@ -21,6 +21,7 @@ function ModalContainer({
     setOpen,
     onClick,
     buttonText,
+    isUserForm,
     postUrl,
     setOpenSignUp,
     theme
@@ -30,6 +31,7 @@ function ModalContainer({
         setOpen: PropTypes.func.isRequired,
         onClick: PropTypes.any.isRequired,
         buttonText: PropTypes.string.isRequired,
+        isUserForm: PropTypes.bool.isRequired,
         postUrl: PropTypes.string,
         setOpenSignUp: PropTypes.func,
         theme: PropTypes.object.isRequired
@@ -53,11 +55,9 @@ function ModalContainer({
         >
             <Fade in={open}>
                 <form style={modalStyle} className="modalContainer__paper">
-                    {buttonText !== "Copy to clipboard" && (
-                        <div className="modalContainer__message">
-                            Log in or sign up to like and comment on posts
-                        </div>
-                    )}
+                    <div className="modalContainer__message">
+                        {description}
+                    </div>
                     <div className="modalContainer__signup">
                         <center>
                             <img
@@ -68,7 +68,7 @@ function ModalContainer({
                             />
                         </center>
 
-                        {buttonText === "Copy to clipboard" ? (
+                        {!isUserForm ? (
                             <Input
                                 type="text"
                                 value={postUrl}
@@ -103,9 +103,9 @@ function ModalContainer({
                             <Button
                                 className="modalContainer__button"
                                 type={
-                                    buttonText !== "Copy to clipboard" ? "submit" : null
+                                    isUserForm ? "submit" : null
                                 }
-                                disabled={buttonText !== "Copy to clipboard" && (!validate(email) || password.length < 6)}
+                                disabled={isUserForm && (!validate(email) || password.length < 6)}
                                 onClick={(event) => onClick(event, email, password)}
                                 variant="contained"
                                 color="primary"

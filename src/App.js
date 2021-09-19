@@ -142,6 +142,7 @@ function App() {
                 setOpen={setOpenSignUp}
                 onClick={signUp}
                 buttonText="Sign Up"
+                isUserForm={true}
                 theme={theme}
             />
 
@@ -150,6 +151,7 @@ function App() {
                 setOpen={setOpenLogIn}
                 onClick={logIn}
                 buttonText="Log In"
+                isUserForm={true}
                 setOpenSignUp={setOpenSignUp}
                 theme={theme}
             />
@@ -159,6 +161,7 @@ function App() {
                 setOpen={setOpenShare}
                 onClick={copyToClipboard}
                 buttonText="Copy to clipboard"
+                isUserForm={false}
                 postUrl={postUrl}
                 theme={theme}
             />
